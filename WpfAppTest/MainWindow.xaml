@@ -1,0 +1,155 @@
+﻿<Window x:Class="WpfAppTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppTest"
+        xmlns:localModels="clr-namespace:WpfAppTest.models"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+
+        <ObjectDataProvider x:Name="DishsODP" x:Key="Dishs" ObjectType="{x:Type localModels:DishList}" />
+        <LinearGradientBrush x:Key="ListBoxGradient" StartPoint="0,0" EndPoint="0,1">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Color="#90000000" Offset="0" />
+                <GradientStop Color="#40000000" Offset="0.005" />
+                <GradientStop Color="#10000000" Offset="0.04" />
+                <GradientStop Color="#20000000" Offset="0.945" />
+                <GradientStop Color="#60FFFFFF" Offset="1" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+        <!-- DATA TEMPLATES -->
+        <DataTemplate DataType="{x:Type localModels:Dish}">
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Padding="4" Margin="2" Background="White">
+                <Image Source="{Binding Image}" />
+            </Border>
+        </DataTemplate>
+        <Style x:Key="DishListStyle" TargetType="{x:Type ListBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Background="{StaticResource ListBoxGradient}">
+                            <ScrollViewer
+                                VerticalScrollBarVisibility="Auto"
+                                HorizontalScrollBarVisibility="Disabled">
+                                <WrapPanel
+                                    IsItemsHost="True"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Left" />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- PHOTOLIST STORYBOARDS -->
+
+        <Style x:Key="DishListItem" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="MaxHeight" Value="75" />
+            <Setter Property="MinHeight" Value="75" />
+            <Setter Property="Opacity" Value=".75" />
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Duration="0:0:0.2"
+                                    Storyboard.TargetProperty="MaxHeight"
+                                    To="85" />
+                                <DoubleAnimation
+                                    Duration="0:0:0.2"
+                                    Storyboard.TargetProperty="Opacity"
+                                    To="1.0" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+
+                <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Duration="0:0:1"
+                                    Storyboard.TargetProperty="MaxHeight" />
+                                <DoubleAnimation
+                                    Duration="0:0:0.2"
+                                    Storyboard.TargetProperty="Opacity" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Width="Auto" Height="Auto" LastChildFill="True">
+        <!--顶部菜单区域-->
+        <Menu Width="Auto" Height="138" Background="LightGray" DockPanel.Dock="Top">
+            <!--File菜单项-->
+            <MenuItem Header="文件">
+                <MenuItem Header="保存"/>
+                <Separator/>
+                <MenuItem Header="退出"/>
+            </MenuItem>
+            <!--About 菜单项-->
+            <MenuItem Header="帮助">
+                <MenuItem Header="关于本产品"/>
+            </MenuItem>
+        </Menu>
+        <!--状态栏-->
+        <StackPanel Width="Auto" Height="25" Background="LightGray" Orientation="Horizontal" DockPanel.Dock="Bottom">
+            <Label Width="Auto" Height="Auto" Content="状态栏" FontFamily="Arial" FontSize="12"/>
+        </StackPanel>
+        <!--Left-->
+        <StackPanel Width="130" Height="Auto" Background="Gray" DockPanel.Dock="Left">
+            <Button Margin="10" Width="Auto" Height="30" Content="导航栏"/>
+            <Button Margin="10" Width="Auto" Height="30" Content="导航栏"/>
+            <Button Margin="10" Width="Auto" Height="30" Content="导航栏"/>
+        </StackPanel>
+
+        <!--Right-->
+        <ListBox Style="{DynamicResource DishListStyle}"
+                     Name="DishListBox"
+                     Margin="0,0,0,20"
+                     DataContext="{Binding Source={StaticResource Dishs}}"
+                     ItemsSource="{Binding }"
+                     ItemContainerStyle="{DynamicResource DishListItem}"
+                     SelectedIndex="0" DockPanel.Dock="Left" Visibility="Visible" />
+        <ScrollViewer Visibility="Collapsed">
+            <WrapPanel VerticalAlignment="Top" Orientation="Horizontal">
+                <Image Height="256" Width="256" Source="meals/meal1.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal2.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal3.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal4.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal5.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal6.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal1.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal2.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal3.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal4.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal5.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal6.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal1.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal2.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal3.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal4.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal5.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal6.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal1.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal2.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal3.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal4.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal5.jpg" Margin="10,10,10,10" />
+                <Image Height="256" Width="256" Source="meals/meal6.jpg" Margin="10,10,10,10" />
+            </WrapPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
