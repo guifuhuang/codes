@@ -68,7 +68,7 @@ namespace DcMonitor.File
         private void CopyFile(DcFileSystemEventArgs file)
         {
             // 不能是和监控目录相同或是其子目录，否则可能会引发递触发
-            IoHelper.CopyFile(file.FullPath, Path.Combine(@"C:\zjzy\IBM", file.LastWriteTime.DateTimeToyyyyMMddHHmmssfff(), file.Name));
+            IoHelper.CopyFile(file.FullPath, Path.Combine(@"C:\Test\HGF", file.LastWriteTime.DateTimeToyyyyMMddHHmmssfff(), file.Name));
         }
     }
 }
